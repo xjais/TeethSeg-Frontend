@@ -29,7 +29,7 @@ const { Dragger } = Upload;
 const SegmentCom = ({ setSegment }) => {
     // const containerName = `upload`; // 容器名称
     const userInfo = window.localStorage.getItem('_authing_user') ? JSON.parse(window.localStorage.getItem('_authing_user')) : {}
-    const [containerName, setContainerName] = useState(userInfo.username);
+    const [containerName, setContainerName] = useState(userInfo.username === "xiaojun" ? userInfo.username : userInfo.id);
     const fileOBJTypes = ["OBJ"];
     const fileVTPTypes = ["VTP"];
     const [file, setFile] = useState(null);

@@ -29,7 +29,7 @@ const { Dragger } = Upload;
 const VisualizeCom = ({ setVisualize }) => {
     // const containerName = `upload`; // 容器名称
     const userInfo = window.localStorage.getItem('_authing_user') ? JSON.parse(window.localStorage.getItem('_authing_user')) : {}
-    const [containerName, setContainerName] = useState(userInfo.username);
+    const [containerName, setContainerName] = useState(userInfo.username === "xiaojun" ? userInfo.username : userInfo.id);
     const filetypes = ["png", 'jpg', 'jpge'];
     const [file, setFile] = useState(null);
     const formRef = useRef(null);
