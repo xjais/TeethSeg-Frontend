@@ -95,14 +95,14 @@ function Main() {
                 </div>
                 <Image
                   // width={'24vw'}
-                  style={{ maxHeight: "700px", maxWidth: "100%" }}
+                  style={{ maxHeight: "600px", maxWidth: "100%" }}
                   src={flagFile}
                 />
               </>
             ) : (
               <>
                 <div className="text-center flex-box flex-col">
-                  {/* <ThreeDRenderer file={fileBlob} /> */}
+                  <ThreeDRenderer file={fileBlob} />
                 </div>
               </>
             )}

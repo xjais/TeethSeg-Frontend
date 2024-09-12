@@ -44,7 +44,11 @@ function Sign() {
   const startWithRedirect = () => guard.startWithRedirect();
 
   // 退出登录
-  const onLogout = () => guard.logout();
+  const onLogout = () => {
+    guard.logout();
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+  };
 
   return (
     <>

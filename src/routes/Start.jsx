@@ -66,32 +66,13 @@ function Start() {
   return (
     // <div className="flex-box flex-col">
     <Layout style={{ height: "100vh" }}>
-      <Sider breakpoint="lg" collapsedWidth="0" style={siderStyle} className={themeContext.theme == "dark" ? "darkInfo" : "lightInfo"} width="15%">
-        {/* <div style={{ position: "absolute", top: "42%", left: "100.3%", transform: "translate(-0%,-50%)" }}>
-          <div
-            style={{
-              cursor: "pointer",
-              backgroundColor: "#ffffff",
-              width: "20px",
-              height: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: "0px 5px 5px 0px",
-            }}
-            className="antdIconRight"
-          >
-            {!siderFlag ? (
-              <>
-                <LeftCircleOutlined style={{ color: "black" }} />
-              </>
-            ) : (
-              <>
-                <RightCircleOutlined style={{ color: "black" }} />
-              </>
-            )}
-          </div>
-        </div> */}
+      <Sider
+        breakpoint="lg"
+        collapsedWidth="0"
+        style={siderStyle}
+        className={`${siderFlag ? "" : "siderLG "}${themeContext.theme == "dark" ? "darkInfo " : "lightInfo "}`}
+        width="230px"
+      >
         <TreeInfo />
       </Sider>
       <Content>
