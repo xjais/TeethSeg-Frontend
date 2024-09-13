@@ -19,6 +19,7 @@ import { getAssToken } from "./utils/auth";
 import { QueryClient, QueryClientProvider } from "react-query";
 import FlagFileInfoMan from "@/contexts/flagFile";
 import SiderFlagMan from "@/contexts/siderFlag";
+import AllLoadingMan from "@/contexts/allLoading";
 
 export const routerApp = createBrowserRouter([
   {
@@ -51,6 +52,7 @@ function App() {
   const [user, setUser] = useState(getAssToken());
   const [flagFile, setFlagFile] = useState(null);
   const [siderFlag, setSiderFlag] = useState(false);
+  const [allLoading, setAllLoading] = useState(false);
 
   return (
     <GuardProvider
@@ -62,15 +64,17 @@ function App() {
       // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
       redirectUri={`${window.location.origin}/sign-in`}
     >
-      <SiderFlagMan.Provider value={{ siderFlag: siderFlag, setSiderFlag: setSiderFlag }}>
-        <FlagFileInfoMan.Provider value={{ flagFile: flagFile, setFlagFile: setFlagFile }}>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider attribute="class" defaultTheme="system" storageKey="vite-ui-theme" enableSystem>
-              <RouterProvider router={routerApp} />
-            </ThemeProvider>
-          </QueryClientProvider>
-        </FlagFileInfoMan.Provider>
-      </SiderFlagMan.Provider>
+      <AllLoadingMan.Provider value={{ allLoading: allLoading, setAllLoading: setAllLoading }}>
+        <SiderFlagMan.Provider value={{ siderFlag: siderFlag, setSiderFlag: setSiderFlag }}>
+          <FlagFileInfoMan.Provider value={{ flagFile: flagFile, setFlagFile: setFlagFile }}>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider attribute="class" defaultTheme="system" storageKey="vite-ui-theme" enableSystem>
+                <RouterProvider router={routerApp} />
+              </ThemeProvider>
+            </QueryClientProvider>
+          </FlagFileInfoMan.Provider>
+        </SiderFlagMan.Provider>
+      </AllLoadingMan.Provider>
     </GuardProvider>
   );
 }

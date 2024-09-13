@@ -17,6 +17,7 @@ function Start() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const { siderFlag, setSiderFlag } = useContext(SiderFlagMan);
+  const [collapsedBreak, setCollapsedBreak] = useState(false);
 
   const themeContext = useContext(ThemeProviderContext);
 
@@ -67,7 +68,14 @@ function Start() {
     // <div className="flex-box flex-col">
     <Layout style={{ height: "100vh" }}>
       <Sider
+        collapsed={collapsedBreak}
         breakpoint="lg"
+        onBreakpoint={(broken) => {
+          // console.log(broken);
+        }}
+        onCollapse={(collapsed) => {
+          setCollapsedBreak(collapsed);
+        }}
         collapsedWidth="0"
         style={siderStyle}
         className={`${siderFlag ? "" : "siderLG "}${themeContext.theme == "dark" ? "darkInfo " : "lightInfo "}`}

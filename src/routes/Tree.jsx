@@ -3,6 +3,7 @@ import { Form, Spin, Button, Modal, Tree, Input, message } from "antd";
 import { useQuery, useQueryClient } from "react-query";
 import axisoRequest from "@/utils/axios";
 import FlagFileInfoMan from "@/contexts/flagFile";
+import AllLoadingMan from "@/contexts/allLoading";
 import { useGuard } from "@authing/guard-react18";
 
 const { Item } = Form;
@@ -36,6 +37,7 @@ const App = () => {
   const guard = useGuard();
   const userInfo = window.localStorage.getItem("_authing_user") ? JSON.parse(window.localStorage.getItem("_authing_user")) : {};
   const { flagFile, setFlagFile } = useContext(FlagFileInfoMan);
+  const { allLoading, setAllLoading } = useContext(AllLoadingMan);
   const [containerName, setContainerName] = useState(userInfo.username === "xiaojun" ? userInfo.username : userInfo.id);
   const [treeData, setTreeData] = useState(initTreeData);
   const [isOpenModal, setIsOpenModal] = useState(false);
