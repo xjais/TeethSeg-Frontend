@@ -2,7 +2,7 @@ import "./styles/App.css";
 import { BrowserRouter as Router, Route, Routes, useLocation, createBrowserRouter, Outlet, RouterProvider, Navigate } from "react-router-dom";
 import { MessageSquare, X } from "lucide-react";
 import { auth } from "./config/firebase";
-import { useEffect, useState, lazy } from "react";
+import { useEffect, useContext, useState, lazy } from "react";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import ChatBot from "./routes/Chatbot";
 import { GuardProvider } from "@authing/guard-react18";
@@ -20,6 +20,8 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import FlagFileInfoMan from "@/contexts/flagFile";
 import SiderFlagMan from "@/contexts/siderFlag";
 import AllLoadingMan from "@/contexts/allLoading";
+import { ConfigProvider, theme } from "antd";
+import { useTheme, ThemeProviderContext } from "@/components/ThemeProvider";
 
 export const routerApp = createBrowserRouter([
   {
@@ -53,6 +55,11 @@ function App() {
   const [flagFile, setFlagFile] = useState(null);
   const [siderFlag, setSiderFlag] = useState(false);
   const [allLoading, setAllLoading] = useState(false);
+  const { theme } = useContext(ThemeProviderContext);
+
+  useEffect(() => {
+    console.log(theme);
+  }, [theme]);
 
   return (
     <GuardProvider
@@ -64,17 +71,25 @@ function App() {
       // 如果你配置了多个回调地址，也可以手动指定（此地址也需要加入到应用的「登录回调 URL」中）：
       redirectUri={`${window.location.origin}/sign-in`}
     >
-      <AllLoadingMan.Provider value={{ allLoading: allLoading, setAllLoading: setAllLoading }}>
-        <SiderFlagMan.Provider value={{ siderFlag: siderFlag, setSiderFlag: setSiderFlag }}>
-          <FlagFileInfoMan.Provider value={{ flagFile: flagFile, setFlagFile: setFlagFile }}>
-            <QueryClientProvider client={queryClient}>
-              <ThemeProvider attribute="class" defaultTheme="system" storageKey="vite-ui-theme" enableSystem>
+      <ConfigProvider
+        theme={{
+          // algorithm: theme.defaultAlgorithm,
+          token: {
+            // colorPrimary: theme === "dark" ? "black" : "white",
+            colorPrimary: theme === "dark" ? "black" : "#1677ff",
+          },
+        }}
+      >
+        <AllLoadingMan.Provider value={{ allLoading: allLoading, setAllLoading: setAllLoading }}>
+          <SiderFlagMan.Provider value={{ siderFlag: siderFlag, setSiderFlag: setSiderFlag }}>
+            <FlagFileInfoMan.Provider value={{ flagFile: flagFile, setFlagFile: setFlagFile }}>
+              <QueryClientProvider client={queryClient}>
                 <RouterProvider router={routerApp} />
-              </ThemeProvider>
-            </QueryClientProvider>
-          </FlagFileInfoMan.Provider>
-        </SiderFlagMan.Provider>
-      </AllLoadingMan.Provider>
+              </QueryClientProvider>
+            </FlagFileInfoMan.Provider>
+          </SiderFlagMan.Provider>
+        </AllLoadingMan.Provider>
+      </ConfigProvider>
     </GuardProvider>
   );
 }

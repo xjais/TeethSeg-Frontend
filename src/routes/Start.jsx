@@ -18,7 +18,11 @@ function Start() {
   const [user, setUser] = useState(null);
   const { siderFlag, setSiderFlag } = useContext(SiderFlagMan);
   const [collapsedBreak, setCollapsedBreak] = useState(false);
-
+  const [siderStyle, setSiderStyle] = useState({
+    textAlign: "center",
+    lineHeight: "150px",
+    color: "#fff",
+  });
   const themeContext = useContext(ThemeProviderContext);
 
   const resizeUpdate = (e) => {
@@ -48,17 +52,6 @@ function Start() {
       window.removeEventListener("resize", resizeUpdate);
     };
   }, []);
-
-  const [siderStyle, setSiderStyle] = useState({
-    textAlign: "center",
-    lineHeight: "150px",
-    color: "#fff",
-    // backgroundColor:
-    //     themeContext.theme == "dark"
-    //         ? "#0F1729 !important"
-    //         : "#FFFFFF !important",
-    // borderTop: "1px solid #CBD5E1",
-  });
 
   const {
     token: { colorBgContainer, borderRadiusLG },
