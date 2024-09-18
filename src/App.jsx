@@ -9,7 +9,6 @@ import { GuardProvider } from "@authing/guard-react18";
 import "@authing/guard-react18/dist/esm/guard.min.css";
 import Home from "./routes/Home";
 import Start from "./routes/Start";
-import About from "./routes/About";
 import Docs from "./routes/Docs";
 import SignUp from "./routes/SignUp";
 import SignIn from "./routes/SignIn";
@@ -22,6 +21,9 @@ import SiderFlagMan from "@/contexts/siderFlag";
 import AllLoadingMan from "@/contexts/allLoading";
 import { ConfigProvider, theme } from "antd";
 import { useTheme, ThemeProviderContext } from "@/components/ThemeProvider";
+import VisualizeCom from "./services/main/VisualizeCom";
+import SegmentCom from "./services/main/SegmentCom";
+import ShowFile from "./components/ShowFile";
 
 export const routerApp = createBrowserRouter([
   {
@@ -43,6 +45,18 @@ export const routerApp = createBrowserRouter([
       {
         path: "/start",
         element: <Start />,
+      },
+      {
+        path: "/visualizeCom",
+        element: <VisualizeCom />,
+      },
+      {
+        path: "/segmentCom",
+        element: <SegmentCom />,
+      },
+      {
+        path: "/show-file",
+        element: <ShowFile />,
       },
     ],
   },

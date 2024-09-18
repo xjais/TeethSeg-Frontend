@@ -41,30 +41,6 @@ const VisualizeCom = ({ setVisualize }) => {
   const [uploadStatus, setUploadStatus] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
 
-  // 全屏
-  const handleResizeWindow = () => {
-    const headerElement = document.querySelector(".header");
-    const footerElement = document.querySelector(".footer");
-
-    setFullScreen(!fullScreen);
-
-    if (!fullScreen) {
-      if (headerElement) {
-        headerElement.style.display = "none";
-      }
-      if (footerElement) {
-        footerElement.style.display = "none";
-      }
-    } else {
-      if (headerElement) {
-        headerElement.style.display = "block";
-      }
-      if (footerElement) {
-        footerElement.style.display = "block";
-      }
-    }
-  };
-
   // 获取 sas 令牌
   const handleUpload = () => {
     const formData = new FormData();
@@ -161,39 +137,9 @@ const VisualizeCom = ({ setVisualize }) => {
     fileList,
   };
 
-  // 返回
-  const handleBackBtn = () => {
-    setVisualize(false);
-  };
-
   return (
     <>
-      <div className={`w-full h-screen scroll-smooth bg-primary-background mt-4 "block"}`}>
-        <div className="p-3 m-4 flex justify-center md:justify-between max-h-20 space-x-2 sm:space-x-4">
-          <button
-            className="bg-slate-100 font-semibold text-slate-800 py-4 px-2 md:px-4 hover:bg-slate-600 hover:text-white rounded-lg transition ease-linear"
-            onClick={handleBackBtn}
-          >
-            <div className="flex items-center">
-              <AiOutlineArrowLeft className="mx-2" />
-              <span className="hidden sm:block">返回</span>
-            </div>
-          </button>
-          <button
-            className="bg-slate-100 font-semibold text-slate-800 py-2 px-4 hover:bg-slate-600 hover:text-white rounded-lg transition ease-linear"
-            onClick={handleResizeWindow}
-          >
-            {fullScreen ? (
-              <div className="flex items-center font-semibold">
-                <span className="mx-2 hidden sm:block whitespace-nowrap">退出全屏</span> <AiOutlineFullscreenExit size={20} />
-              </div>
-            ) : (
-              <div className="flex items-center font-semibold">
-                <span className="mx-2  hidden sm:block whitespace-nowrap">打开全屏</span> <AiOutlineFullscreen size={20} />
-              </div>
-            )}
-          </button>
-        </div>
+      <div className={`w-full h-screen scroll-smooth bg-primary-background "block"}`}>
         <div className="text-center flex-box flex-col">
           <div className="text-primary p-12 text-3xl font-semibold text-center">请选择需要上传的图片</div>
           <div>

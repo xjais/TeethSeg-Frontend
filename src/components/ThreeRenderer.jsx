@@ -55,8 +55,8 @@ const ThreeDRenderer = ({ file }) => {
         shadowscamera={{ fov: 15 }}
         style={{
           backgroundColor: "transparent", // 透明
-          height: "65vh", // 高度
-          width: isPhoneShow ? " 85vw" : "55vw",
+          height: "70vh", // 高度
+          width: isPhoneShow ? " 85vw" : "65vw",
         }}
         camera={{ position: [0, 10, 10] }}
       >

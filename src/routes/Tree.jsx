@@ -8,6 +8,7 @@ import { useGuard } from "@authing/guard-react18";
 import { getListContainer, createContainer } from "@/api/blobFuncApi";
 import { getContainerNameSessionStorage, setContainerNameSessionStorage } from "@/utils/auth";
 import "./TreeCss.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const { Item } = Form;
 
@@ -33,6 +34,8 @@ const updateTreeData = (list, key, children) =>
 
 const TreeInfo = () => {
   const guard = useGuard();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [addFolderForm] = Form.useForm();
   const userInfo = window.localStorage.getItem("_authing_user") ? JSON.parse(window.localStorage.getItem("_authing_user")) : {};
   const { flagFile, setFlagFile } = useContext(FlagFileInfoMan);
@@ -45,6 +48,8 @@ const TreeInfo = () => {
   const [showLeafIcon, setShowLeafIcon] = useState(true);
   const [showLine, setShowLine] = useState(true);
   const { DirectoryTree } = Tree;
+  const [expandedKeys, setExpandedKeys] = useState(["0"]);
+  const [treeLoading, setTreeLoading] = useState(false);
 
   // 查询所有已有容器 - 判断是否需要创建容器
   const getListContainerQuery = useQuery(
@@ -110,6 +115,7 @@ const TreeInfo = () => {
   const listInfoQuery = useQuery(
     ["listInfo"],
     () => {
+      setTreeLoading(true);
       return axiosRequest
         .get(`/api/list?container=${containerName}`)
         .then((result) => {
@@ -141,6 +147,7 @@ const TreeInfo = () => {
           });
           setTreeData((origin) => updateTreeData(origin, "01", inputFolder));
           setTreeData((origin) => updateTreeData(origin, "02", outputFolder));
+          setTreeLoading(false);
           return result;
         })
         .catch((error) => {
@@ -150,17 +157,19 @@ const TreeInfo = () => {
     { retry: false, refetchOnWindowFocus: false, enabled: containerFlagInit }
   );
 
-  const onExpand = (expandedKeys, { expanded: boolean, node }) => {};
-
   // 刷新blob列表
   const onSelect = (selectedKeys, data) => {
-    if (data.node.key === "0") {
+    if (data.node.key === "0" || data.node.key === "01" || data.node.key === "02") {
       listInfoQuery.refetch();
     } else {
       if (data.selected) {
         setFlagFile(data.node.url);
+        if (location.pathname !== "/show-file") {
+          navigate("/show-file");
+        }
       } else {
         setFlagFile(null);
+        navigate("/start");
       }
     }
   };
@@ -243,6 +252,21 @@ const TreeInfo = () => {
     listInfoQuery.refetch();
   };
 
+  const onExpand = (keys, { nativeEvent }) => {
+    // console.log("123", isTargetSwitcher(nativeEvent.target));
+    if (isTargetSwitcher(nativeEvent.target)) {
+      setExpandedKeys(keys);
+    }
+  };
+
+  const isTargetSwitcher = (path) => {
+    if (path.classList.value.indexOf("ant-tree-switcher") > -1 || !path.classList.value) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <>
       <div style={{}}>
@@ -252,17 +276,24 @@ const TreeInfo = () => {
             onClick={() => {
               handleNewProject();
             }}
-            loading={listInfoQuery.isLoading}
+            loading={treeLoading}
           >
             查询
           </Button>
         </div>
         <div style={{ position: "relative", top: "-100px" }}>
-          <Spin spinning={listInfoQuery.isLoading}>
+          <Spin spinning={treeLoading} style={{ maxHeight: "30px" }}>
             <div className="p-5">
               {treeData && treeData.length > 0 ? (
                 <>
-                  <DirectoryTree multiple defaultExpandedKeys={["0"]} onExpand={onExpand} onSelect={onSelect} treeData={treeData} />
+                  <DirectoryTree
+                    multiple
+                    expandedKeys={expandedKeys}
+                    defaultExpandedKeys={["0"]}
+                    onExpand={onExpand}
+                    onSelect={onSelect}
+                    treeData={treeData}
+                  />
                 </>
               ) : (
                 <></>
