@@ -31,15 +31,12 @@ const VisualizeCom = ({ setVisualize }) => {
   const userInfo = window.localStorage.getItem("_authing_user") ? JSON.parse(window.localStorage.getItem("_authing_user")) : {};
   const [containerName, setContainerName] = useState(getContainerNameSessionStorage());
   const filetypes = ["png", "jpg", "jpge"];
-  const [file, setFile] = useState(null);
   const formRef = useRef(null);
   const [fileList, setFileList] = useState([]);
   const [uploading, setUploading] = useState(false);
-  const [isPredicted, setIsPredicted] = useState(false);
-  const [fullScreen, setFullScreen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(false);
 
   // 获取 sas 令牌
   const handleUpload = () => {
@@ -137,6 +134,34 @@ const VisualizeCom = ({ setVisualize }) => {
     fileList,
   };
 
+  const resizeUpdate = (e) => {
+    // 通过事件对象获取浏览器窗口的高度
+    let h = e.target.innerWidth;
+    if (h <= 675) {
+      setScreenWidth(false);
+    } else {
+      setScreenWidth(true);
+    }
+  };
+
+  useEffect(() => {
+    // 页面刚加载完成后获取浏览器窗口的大小
+    let h = window.innerWidth;
+    if (h <= 675) {
+      setScreenWidth(false);
+    } else {
+      setScreenWidth(true);
+    }
+
+    // 页面变化时获取浏览器窗口的大小
+    window.addEventListener("resize", resizeUpdate);
+
+    return () => {
+      // 组件销毁时移除监听事件
+      window.removeEventListener("resize", resizeUpdate);
+    };
+  }, []);
+
   return (
     <>
       <div className={`w-full h-screen scroll-smooth bg-primary-background "block"}`}>
@@ -147,17 +172,35 @@ const VisualizeCom = ({ setVisualize }) => {
               <form ref={formRef} id="upload-form" onSubmit={handleUpload} className="w-full">
                 <div className="w-full py-12 flex-box flex-col">
                   <div>
-                    <div style={{ margin: "0 auto" }}>
-                      <Dragger style={{ padding: "20px", margin: "0px 32px", width: "18vw", height: "20vh" }} {...props}>
-                        <div style={{ margin: "0px 0px" }}>
-                          <p className="ant-upload-drag-icon">
-                            <InboxOutlined />
-                          </p>
-                          <p className="ant-upload-text">点击可选择附件</p>
-                          <p className="ant-upload-hint">拖拽可选择附件</p>
+                    {screenWidth ? (
+                      <>
+                        <div style={{ margin: "0 auto" }}>
+                          <Dragger style={{ padding: "20px", margin: "0px 32px", width: "18vw", height: "20vh" }} {...props}>
+                            <div style={{ margin: "0px 0px" }}>
+                              <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                              </p>
+                              <p className="ant-upload-text">点击可选择附件</p>
+                              <p className="ant-upload-hint">拖拽可选择附件</p>
+                            </div>
+                          </Dragger>
                         </div>
-                      </Dragger>
-                    </div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ margin: "0 auto" }}>
+                          <Dragger style={{ padding: "20px", margin: "0px 32px", width: "45vw", height: "20vh" }} {...props}>
+                            <div style={{ margin: "0px 0px" }}>
+                              <p className="ant-upload-drag-icon">
+                                <InboxOutlined />
+                              </p>
+                              <p className="ant-upload-text">点击可选择附件</p>
+                              <p className="ant-upload-hint">拖拽可选择附件</p>
+                            </div>
+                          </Dragger>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <Button
                     type="primary"

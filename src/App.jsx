@@ -71,10 +71,6 @@ function App() {
   const [allLoading, setAllLoading] = useState(false);
   const { theme } = useContext(ThemeProviderContext);
 
-  useEffect(() => {
-    console.log(theme);
-  }, [theme]);
-
   return (
     <GuardProvider
       appId="66cc8ab91d4c76192bda3a3a"
