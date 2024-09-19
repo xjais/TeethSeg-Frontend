@@ -23,6 +23,7 @@ function Main() {
     const index = fileNameList[fileNameList.length - 1];
     if (index === "png" || index === "jpg" || index === "jpeg") {
       setFileNameFlag(true);
+      setFileLoading(false);
     } else {
       setFileLoading(true);
       getOutFileInfo(flagFile);

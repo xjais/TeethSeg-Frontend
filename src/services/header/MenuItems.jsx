@@ -19,12 +19,6 @@ function MenuItems() {
     } else {
       setUser(null);
     }
-    guard.checkLoginStatus().then((user) => {
-      // 如果是未登录状态，user 为 undefined
-      if (!user) {
-        setUser(null);
-      }
-    });
   }, []);
 
   return (

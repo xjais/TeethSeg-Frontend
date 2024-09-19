@@ -29,6 +29,7 @@ export default function Callback() {
       const loginStatus = await guard.checkLoginStatus();
 
       if (!loginStatus) {
+        startWithRedirect();
         return console.error("Guard is not get login status");
       }
 

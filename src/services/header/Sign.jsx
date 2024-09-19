@@ -17,28 +17,7 @@ function Sign() {
     } else {
       setUser(null);
     }
-    guard.checkLoginStatus().then((user) => {
-      // 如果是未登录状态，user 为 undefined
-      if (!user) {
-        setUser(null);
-      }
-    });
   }, []);
-
-  const handleLogOut = async () => {
-    const currentProvider = user.providerData[0].providerId;
-
-    await signOut(auth, provider[currentProvider])
-      .then(() => {
-        console.log("sad to see you go :(");
-
-        const user = auth.currentUser;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
 
   // 跳转到 Authing 托管页面登录
   const startWithRedirect = () => guard.startWithRedirect();

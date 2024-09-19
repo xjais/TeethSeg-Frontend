@@ -44,14 +44,21 @@ function App() {
     } else {
       console.log("qwe");
     }
-    guard.checkLoginStatus().then((user) => {
-      // 如果是未登录状态，user 为 undefined
-      if (!user) {
+    guard
+      .checkLoginStatus()
+      .then((user) => {
+        // 如果是未登录状态，user 为 undefined
+        if (!user) {
+          navigate("/sign-in");
+          window.localStorage.clear();
+          window.sessionStorage.clear();
+        }
+      })
+      .catch((error) => {
         navigate("/sign-in");
         window.localStorage.clear();
         window.sessionStorage.clear();
-      }
-    });
+      });
   }, []);
 
   const resizeUpdate = (e) => {
