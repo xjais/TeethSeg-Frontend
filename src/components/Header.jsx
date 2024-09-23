@@ -2,12 +2,14 @@ import MenuItems from "../services/header/MenuItems";
 import Logo from "../services/header/Logo";
 import Sign from "../services/header/Sign";
 import { Menu } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { ModeToggle } from "./ModeToggle";
 import { Avatar, Row, Col } from "antd";
 import { useLocation } from "react-router-dom";
+import { useTheme, ThemeProviderContext } from "@/components/ThemeProvider";
 
 function Header() {
+  const { theme } = useContext(ThemeProviderContext);
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -15,8 +17,11 @@ function Header() {
 
   return (
     <>
-      <div className={`header ${location.pathname === "/home" ? "headerSticky" : ""}`}>
-        <Row className="mb-5 lg:mb-0 mt-5 lg:mt-0">
+      <div
+        className={`header ${location.pathname === "/home" ? "headerSticky" : ""}`}
+        style={{ backgroundColor: theme === "dark" ? "#0F1729" : "#fff" }}
+      >
+        <Row className=" mb-5 mt-5 lg:mb-0 lg:mt-0 headerRow">
           <Col style={{ display: "flex", alignItems: "center" }} xs={{ span: 14, offset: 2 }} lg={{ span: 6, offset: 1 }}>
             <Logo />
             <div className="ml-5"></div>
@@ -56,7 +61,7 @@ function Header() {
               alignItems: "center",
               justifyContent: "end",
             }}
-            xs={{ span: 6, offset: 1 }}
+            xs={{ span: 7, offset: 0 }}
             lg={{ span: 0, offset: 0 }}
           >
             <div

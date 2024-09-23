@@ -11,6 +11,62 @@ import { Carousel } from "antd";
 
 function Home() {
   const CarouselRef = useRef();
+  const [screenWidth, setScreenWidth] = useState(false);
+  const [imgHeight, setImgHeight] = useState(978);
+
+  const resizeUpdate = (e) => {
+    // 通过事件对象获取浏览器窗口的高度
+    let h = e.target.innerWidth;
+    if (h <= 992) {
+      setScreenWidth(false);
+    } else {
+      setScreenWidth(true);
+    }
+    getImgHeight();
+  };
+
+  const getImgHeight = () => {
+    const headerHeight = document.querySelector(".headerSticky");
+    const headerRow = document.querySelector(".headerRow");
+    const heightVH = getWindowHeight();
+    // 兼容IE和火狐谷歌等的写法;
+    let marginHeight;
+    if (window.getComputedStyle) {
+      marginHeight = window.getComputedStyle(headerRow, null);
+    } else {
+      marginHeight = div.currentStyle; //兼容IE的写法
+    }
+    const margin = Number(marginHeight.marginTop.split("px")[0]) + Number(marginHeight.marginBottom.split("px")[0]);
+    console.log(margin);
+    setImgHeight(heightVH - (headerHeight.clientHeight + margin));
+    console.log(heightVH - (headerHeight.clientHeight + margin));
+  };
+
+  function getWindowHeight() {
+    var windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    return windowHeight;
+  }
+
+  useEffect(() => {
+    // 页面刚加载完成后获取浏览器窗口的大小
+    let h = window.innerWidth;
+    if (h <= 992) {
+      setScreenWidth(false);
+    } else {
+      setScreenWidth(true);
+    }
+    // 获取img高度
+    getImgHeight();
+
+    // 页面变化时获取浏览器窗口的大小
+    window.addEventListener("resize", resizeUpdate);
+
+    return () => {
+      // 组件销毁时移除监听事件
+      window.removeEventListener("resize", resizeUpdate);
+    };
+  }, []);
+
   useEffect(() => {
     // 兼容谷歌
     window.addEventListener("wheel", handleMouseScroll);
@@ -55,44 +111,49 @@ function Home() {
         {[1, 2, 3, 4, 5].map((item) => {
           return (
             <div key={item}>
-              <h3 className="contentStyle">
-                <img src={`https://bing.img.run/rand.php?${Math.random() * 1000}`} alt="无可显示图片" />
-              </h3>
+              {/* <h3 className="contentStyle"> */}
+              <img
+                className="contentStyle"
+                style={{ objectFit: "cover", height: imgHeight }}
+                src={`https://bing.img.run/rand.php?${Math.random() * 1000}`}
+                alt="无可显示图片"
+              />
+              {/* </h3> */}
             </div>
           );
         })}
       </Carousel>
-      {/* <div className="w-full flex flex-col">
-        <div
-          className="parallax-box"
-          style={{
-            backgroundImage: `url(https://bing.img.run/rand.php?${imageObjDay.image1})`,
-          }}
-        ></div>
-        <div
-          className="parallax-box"
-          style={{
-            backgroundImage: `url(https://bing.img.run/rand.php?${imageObjDay.image2})`,
-          }}
-        ></div>
-        <div
-          className="parallax-box"
-          style={{
-            backgroundImage: `url(https://bing.img.run/rand.php?${imageObjDay.image3})`,
-          }}
-        ></div>
-        <div
-          className="parallax-box"
-          style={{
-            backgroundImage: `url(https://bing.img.run/rand.php?${imageObjDay.image4})`,
-          }}
-        ></div>
-      </div> */}
       {/* <Hero /> */}
       {/* <Features /> */}
       {/* <Faq /> */}
       {/* <ContactForm /> */}
       {/* <Footer /> */}
+      {/* // <div className="w-full flex flex-col">
+          //   <div
+          //     className="parallax-box"
+          //     style={{
+          //       backgroundImage: `url(https://bing.img.run/rand.php?${Math.random() * 1000})`,
+          //     }}
+          //   ></div>
+          //   <div
+          //     className="parallax-box"
+          //     style={{
+          //       backgroundImage: `url(https://bing.img.run/rand.php?${Math.random() * 1000})`,
+          //     }}
+          //   ></div>
+          //   <div
+          //     className="parallax-box"
+          //     style={{
+          //       backgroundImage: `url(https://bing.img.run/rand.php?${Math.random() * 1000})`,
+          //     }}
+          //   ></div>
+          //   <div
+          //     className="parallax-box"
+          //     style={{
+          //       backgroundImage: `url(https://bing.img.run/rand.php?${Math.random() * 1000})`,
+          //     }}
+          //   ></div>
+          // </div> */}
     </>
   );
 }

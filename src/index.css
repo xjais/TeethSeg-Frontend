@@ -198,9 +198,9 @@
 }
 
 .headerSticky {
-  position: sticky;
-  top: 0;
-  background-color: #fff;
+  /* position: sticky;
+  top: 0; */
+  /* background-color: #fff; */
 }
 
 /* @media screen (max-width: 992px) and (min-width: 300px) {
